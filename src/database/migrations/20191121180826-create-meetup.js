@@ -19,12 +19,8 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      data: {
+      date: {
         type: Sequelize.DATE,
-        allowNull: false
-      },
-      hour: {
-        type: Sequelize.TIME,
         allowNull: false
       },
       user_id: {
