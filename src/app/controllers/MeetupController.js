@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { isBefore, parseISO } from 'date-fns';
+
 import Meetup from '../models/Meetup';
 import File from '../models/File';
 
@@ -24,6 +26,10 @@ class MeetupController {
 
     if (!checkFileExists) {
       return res.status(400).json({ errors: 'File does exists' });
+    }
+
+    if (isBefore(parseISO(date), new Date())) {
+      return res.status(400).json({ error: 'Past date are invalid' });
     }
 
     const meetup = await Meetup.create({
