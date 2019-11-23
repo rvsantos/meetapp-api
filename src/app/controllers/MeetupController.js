@@ -2,9 +2,19 @@ import * as Yup from 'yup';
 import { isBefore, parseISO } from 'date-fns';
 
 import Meetup from '../models/Meetup';
-import File from '../models/File';
 
 class MeetupController {
+  async index(req, res) {
+    const meetups = await Meetup.findAll({
+      where: {
+        user_id: req.userId
+      },
+      attributes: ['id', 'title', 'description', 'location', 'date']
+    });
+
+    return res.json(meetups);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
