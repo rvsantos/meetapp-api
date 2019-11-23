@@ -85,6 +85,24 @@ class MeetupController {
 
     return res.json(meetup);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const checkMeetupExist = await Meetup.findByPk(id);
+
+    if (!checkMeetupExist) {
+      return res.status(400).json({ errors: 'Meetup does not exists' });
+    }
+
+    if (isBefore(parseISO(checkMeetupExist.date), new Date())) {
+      return res.status(400).json({ error: 'Past date are invalid' });
+    }
+
+    await checkMeetupExist.destroy();
+
+    return res.send();
+  }
 }
 
 export default new MeetupController();
