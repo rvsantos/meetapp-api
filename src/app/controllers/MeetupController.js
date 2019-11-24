@@ -89,7 +89,11 @@ class MeetupController {
   async delete(req, res) {
     const { id } = req.params;
 
-    const checkMeetupExist = await Meetup.findByPk(id);
+    const checkMeetupExist = await Meetup.findByPk(id, {
+      where: {
+        user_id: req.userId
+      }
+    });
 
     if (!checkMeetupExist) {
       return res.status(400).json({ errors: 'Meetup does not exists' });
